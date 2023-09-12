@@ -1,6 +1,8 @@
 package com.example.lab6kt.ui.concerts.view
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,23 +33,25 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.lab6kt.navigation.Screen
 import com.example.lab6kt.ui.concerts.viewmodel.ConcertViewModel
 import com.example.lab6kt.ui.concerts.viewmodel.Concert
-
+import java.net.URLEncoder
 
 
 @Composable
-fun RootView() {
+fun RootView(navController: NavController) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
     ) {
-        MainColumn()
+        MainColumn(navController)
     }
 }
 
 @Composable
-fun MainColumn() {
+fun MainColumn(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,7 +59,7 @@ fun MainColumn() {
         horizontalAlignment = Alignment.Start
     ) {
         TitleText("Todos los Eventos")
-        ShowConcerts()
+        ShowConcerts(navController)
     }
 }
 
@@ -73,14 +77,13 @@ fun TitleText(title: String) {
 }
 
 @Composable
-fun ShowConcerts() {
+fun ShowConcerts(navController: NavController) {
     val viewModel: ConcertViewModel = viewModel()
     val allConcerts = viewModel.allConcerts
 
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-
         TitleText("Todos los Conciertos")
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -91,7 +94,7 @@ fun ShowConcerts() {
             ) {
                 items(allConcerts) { concert ->
                     Column {
-                        DisplayConcertCard(concert)
+                        DisplayConcertCard(concert, navController)
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
@@ -101,12 +104,16 @@ fun ShowConcerts() {
 }
 
 @Composable
-fun DisplayConcertCard(concert: Concert) {
+fun DisplayConcertCard(concert: Concert, navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clip(RoundedCornerShape(8.dp))
+            .clickable {
+                val route = "concertDetails/${concert.bandConcertName}"
+                Log.d("Navigation", "Navigating to: $route")
+                navController.navigate(Screen.ConcertDetails.route + "/${concert.bandConcertName}")},
     ) {
         Column(
 

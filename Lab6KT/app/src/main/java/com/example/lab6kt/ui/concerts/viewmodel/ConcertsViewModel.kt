@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.lab6kt.R
 
-data class Concert(val bandConcertName: String, val concertPlace: String, val concertDate: String, val concertTime: String, val aboutBand: String, val bandImage: Int)
 
 class ConcertViewModel : ViewModel() {
 
