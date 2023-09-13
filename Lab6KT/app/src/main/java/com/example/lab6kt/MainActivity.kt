@@ -16,6 +16,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.lab6kt.navigation.Screen
 import com.example.lab6kt.ui.concerts.view.ShowConcerts
 import com.example.lab6kt.ui.details.view.DisplayConcertDetail
+import com.example.lab6kt.ui.favorite.view.DisplayConcerts
+import com.example.lab6kt.ui.profile.view.UserProfileAlternative
 import com.example.lab6kt.ui.theme.Lab6KTTheme
 
 class MainActivity : ComponentActivity() {
