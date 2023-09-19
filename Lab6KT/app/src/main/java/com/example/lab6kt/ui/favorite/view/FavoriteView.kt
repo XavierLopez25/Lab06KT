@@ -22,7 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.navigation.NavController
+import com.example.lab6kt.navigation.TabsScreen
 import com.example.lab6kt.ui.concerts.viewmodel.Concert
 import com.example.lab6kt.ui.favorite.viewmodel.FavoriteViewModel
 
@@ -30,13 +33,14 @@ import com.example.lab6kt.ui.favorite.viewmodel.FavoriteViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DisplayConcerts() {
+fun DisplayConcerts(navController: NavController) {
     val viewModel: FavoriteViewModel = viewModel()
     val concertDetails = viewModel.allConcerts
 
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
+        TopBarWithBackButton(title = "Favorites", navController = navController)
         // Add the TopAppBar
         TopAppBar(
             title = {
@@ -124,5 +128,18 @@ fun AddDivider() {
         color = Color.Gray,
         thickness = 1.dp,
         modifier = Modifier.padding(horizontal = 12.dp)
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarWithBackButton(title: String, navController: NavController) {
+    TopAppBar(
+        title = { Text(text = title) },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(TabsScreen.Concerts.route) }) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+            }
+        }
     )
 }

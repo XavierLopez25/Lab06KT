@@ -13,12 +13,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lab6kt.ui.details.viewmodel.DetailsViewModel
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -41,8 +44,9 @@ import com.example.lab6kt.ui.concerts.view.RootView
 import com.example.lab6kt.ui.concerts.viewmodel.Concert
 
 @Composable
-fun ConcertLayout(concert: Concert) {
+fun ConcertLayout(concert: Concert, navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
+        TopAppBarWithBackButton(title = concert.bandConcertName, navController = navController)
         TopImage(imageResource = concert.bandImage)
         ConcertBox(concert)
     }
@@ -171,7 +175,7 @@ fun ConcertButton(label: String) {
 
 
 @Composable
-fun DisplayConcertDetail(concertId: String) {
+fun DisplayConcertDetail(concertId: String, navController: NavController) {
     // Obtain the DetailsViewModel
     val detailsViewModel: DetailsViewModel = viewModel()
 
@@ -182,11 +186,26 @@ fun DisplayConcertDetail(concertId: String) {
     val concert = detailsViewModel.selectedConcert
 
     if (concert != null) {
-        ConcertLayout(concert)
+        ConcertLayout(concert, navController)
     } else {
         // Handle the case where the concert details are not available
         // This could be a Text widget displaying an error message, for example
         Text(text = "Concert details not available.")
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopAppBarWithBackButton(title: String, navController: NavController) {
+    androidx.compose.material3.TopAppBar(
+        title = { Text(text = title) },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+            }
+        }
+    )
+}
+
+
 

@@ -15,13 +15,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
@@ -38,15 +42,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.lab6kt.R
+import com.example.lab6kt.navigation.TabsScreen
 import com.example.lab6kt.ui.profile.viewmodel.UserProfileViewModel
 
 @Composable
-fun UserProfileAlternative() {
+fun UserProfileAlternative(navController: NavController) {
     val viewModel: UserProfileViewModel = viewModel()
     val userName = viewModel.userName.value
 
     Column(modifier = Modifier.fillMaxSize()) {
+        TopBarWithBackButton(title = "Profile", navController = navController)
         UserHeader(userName = userName)
         UserOptions()
     }
@@ -156,4 +163,16 @@ fun OptionAction(trailingIcon: ImageVector?, toggle: Boolean, isChecked: Mutable
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarWithBackButton(title: String, navController: NavController) {
+    TopAppBar(
+        title = { Text(text = title) },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(TabsScreen.Concerts.route) }) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+            }
+        }
+    )
+}
 
